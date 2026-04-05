@@ -1,17 +1,28 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🏘️ Social Phia - Neighborhood Board
 
-## Getting Started
+A modern, location-based neighborhood assistance application. Users can post tasks they need help with, and others in their vicinity can accept and assist them. Once a job is accepted, both users can coordinate in real-time via a dedicated chat room.
 
-First, run the development server:
+## ✨ Features
+
+- **Geospatial Job Matching:** View requests from neighbors in your local area using automatic GPS or manual coordinate entry.
+- **Job Management:** Post jobs, view active requests, track your ongoing tasks, and reopen uncompleted requests.
+- **Real-Time Ready Chat:** Integrated chat room for task coordination once a job is accepted.
+- **Modern UI/UX:** Built with Tailwind CSS, featuring glass-morphism, responsive design, smooth animations, and intuitive empty states.
+- **Secure Authentication:** User accounts powered by NextAuth.js.
+
+## 🚀 Tech Stack
+
+- **Framework:** Next.js (App Router)
+- **Styling:** Tailwind CSS
+- **Database:** MongoDB (Mongoose) with Geospatial (`2dsphere`) indexing
+- **Authentication:** NextAuth.js
+
+## 🛠️ Getting Started
+
+### 1. Install Dependencies
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
