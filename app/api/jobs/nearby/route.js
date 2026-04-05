@@ -17,7 +17,8 @@ export async function GET(req) {
   const { searchParams } = new URL(req.url);
   const lng = parseFloat(searchParams.get("lng"));
   const lat = parseFloat(searchParams.get("lat"));
-  const maxDistance = parseFloat(searchParams.get("radius")) || 5000; // default 5km
+  const radiusKm = parseFloat(searchParams.get("radius"));
+  const maxDistance = (isNaN(radiusKm) ? 5 : radiusKm) * 1000; // convert km to meters
 
   try {
     const nearbyJobs = await Job.find({

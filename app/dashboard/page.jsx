@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -16,7 +16,7 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isNewsModalOpen, setIsNewsModalOpen] = useState(false);
-  const [newJob, setNewJob] = useState({ title: "", description: "" });
+  const [newJob, setNewJob] = useState({ title: "", description: "", range: 5, reward: "" });
   const [newNews, setNewNews] = useState({ content: "", type: "news", image: "" });
   const [submitting, setSubmitting] = useState(false);
   
@@ -40,6 +40,9 @@ export default function DashboardPage() {
         fetchMyJobs();
       } else if (activeTab === "news") {
         fetchNews();
+      } else if (activeTab === "suggestions") {
+        fetchBoardJobs();
+        fetchMyJobs();
       }
     }
   }, [activeTab, status, location, radius]);
@@ -71,15 +74,50 @@ export default function DashboardPage() {
     }
   };
 
+  // Compute matching suggestions based on needs vs rewards
+  const suggestedMatches = useMemo(() => {
+    const matches = [];
+    const myOpen = myJobs.filter(j => j.status === "open");
+    const boardOpen = jobs.filter(j => j.status === "open");
+
+    myOpen.forEach(mJob => {
+      boardOpen.forEach(bJob => {
+        const myReward = mJob.reward?.toLowerCase().trim();
+        const theirNeed = `${bJob.title} ${bJob.description}`.toLowerCase();
+        const theirReward = bJob.reward?.toLowerCase().trim();
+        const myNeed = `${mJob.title} ${mJob.description}`.toLowerCase();
+
+        const iCanHelpThem = myReward && myReward.length > 2 && theirNeed.includes(myReward);
+        const theyCanHelpMe = theirReward && theirReward.length > 2 && myNeed.includes(theirReward);
+
+        if (iCanHelpThem || theyCanHelpMe) {
+          matches.push({
+            id: `${mJob._id}-${bJob._id}`,
+            myJob: mJob,
+            theirJob: bJob,
+            reason: iCanHelpThem 
+              ? `Your return "${mJob.reward}" matches what they need!` 
+              : `Their return "${bJob.reward}" matches what you need!`
+          });
+        }
+      });
+    });
+    return matches;
+  }, [myJobs, jobs]);
+
   const fetchBoardJobs = async () => {
+    // Prevent calling the nearby endpoint if we don't have coordinates yet
+    if (!location) {
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
     try {
       const queryParams = new URLSearchParams();
-      if (location) {
-        queryParams.append("lat", location.lat);
-        queryParams.append("lng", location.lng);
-        queryParams.append("radius", radius);
-      }
+      queryParams.append("lat", location.lat);
+      queryParams.append("lng", location.lng);
+      queryParams.append("radius", radius);
       
       const res = await fetch(`/api/jobs/nearby?${queryParams.toString()}`);
       if (res.ok) {
@@ -151,7 +189,7 @@ export default function DashboardPage() {
 
       if (res.ok) {
         setIsModalOpen(false);
-        setNewJob({ title: "", description: "" });
+        setNewJob({ title: "", description: "", range: 5, reward: "" });
         if (activeTab === "my-tasks") {
           fetchMyJobs();
         } else {
@@ -337,7 +375,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Tabs */}
-        <div className="flex space-x-1 bg-gray-100 p-1 rounded-xl mb-8 max-w-2xl">
+        <div className="flex space-x-1 bg-gray-100 p-1 rounded-xl mb-8 max-w-4xl flex-wrap">
           <button
             onClick={() => setActiveTab("board")}
             className={`flex-1 py-2.5 text-sm font-medium rounded-lg transition-all ${
@@ -368,6 +406,16 @@ export default function DashboardPage() {
           >
             Neighborhood News
           </button>
+          <button
+            onClick={() => setActiveTab("suggestions")}
+            className={`flex-1 py-2.5 text-sm font-medium rounded-lg transition-all ${
+              activeTab === "suggestions"
+                ? "bg-white text-purple-700 shadow-sm"
+                : "text-gray-500 hover:text-gray-900 hover:bg-gray-200/50"
+            }`}
+          >
+            Suggestions ✨
+          </button>
         </div>
 
         {/* Content Area */}
@@ -389,6 +437,11 @@ export default function DashboardPage() {
                         Open
                       </span>
                       <h3 className="text-xl font-bold text-gray-900 mb-2">{job.title}</h3>
+                      {job.reward && (
+                        <p className="text-sm font-medium text-emerald-600 mb-2">
+                          🎁 Return: {job.reward}
+                        </p>
+                      )}
                       <p className="text-gray-600 text-sm line-clamp-3 mb-4">{job.description}</p>
                       <p className="text-xs text-gray-400 mb-4">
                         Posted by {job.postedBy?.name || "a neighbor"}
@@ -445,6 +498,11 @@ export default function DashboardPage() {
                       </div>
 
                       <h3 className="text-xl font-bold text-gray-900 mb-2">{job.title}</h3>
+                      {job.reward && (
+                        <p className="text-sm font-medium text-emerald-600 mb-2">
+                          🎁 Return: {job.reward}
+                        </p>
+                      )}
                       <p className="text-gray-600 text-sm line-clamp-2 mb-4">{job.description}</p>
                     </div>
 
@@ -523,6 +581,45 @@ export default function DashboardPage() {
                   </p>
                 </div>
               )
+            ) : activeTab === "suggestions" ? (
+              suggestedMatches.length > 0 ? (
+                suggestedMatches.map((match) => (
+                  <div key={match.id} className="bg-gradient-to-br from-indigo-50 to-purple-50 p-6 rounded-2xl border border-indigo-100 shadow-sm flex flex-col">
+                    <span className="inline-block px-3 py-1 bg-indigo-100 text-indigo-800 text-xs font-bold uppercase tracking-wider rounded-lg mb-3 w-max">
+                      Match Found ✨
+                    </span>
+                    <p className="text-sm font-bold text-purple-700 mb-4">{match.reason}</p>
+                    
+                    <div className="bg-white p-3 rounded-xl mb-3 border border-indigo-50 text-sm">
+                      <p className="text-xs text-gray-500 mb-1">Your Request:</p>
+                      <p className="font-semibold text-gray-800">{match.myJob.title}</p>
+                    </div>
+
+                    <div className="bg-white p-3 rounded-xl mb-4 border border-indigo-50 text-sm">
+                      <p className="text-xs text-gray-500 mb-1">Their Request:</p>
+                      <p className="font-semibold text-gray-800">{match.theirJob.title}</p>
+                      {match.theirJob.reward && (
+                        <p className="text-emerald-600 font-medium text-xs mt-1">🎁 Return: {match.theirJob.reward}</p>
+                      )}
+                    </div>
+
+                    <button
+                      onClick={() => handleAcceptJob(match.theirJob._id)}
+                      className="w-full mt-auto bg-indigo-600 text-white font-medium py-2.5 rounded-xl hover:bg-indigo-700 transition-colors shadow-sm"
+                    >
+                      Accept & Connect
+                    </button>
+                  </div>
+                ))
+              ) : (
+                <div className="col-span-full py-16 text-center bg-white border border-gray-100 rounded-3xl">
+                  <div className="text-4xl mb-4">🔍</div>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">No matches right now</h3>
+                  <p className="text-gray-500 max-w-sm mx-auto">
+                    We couldn't find any direct matches between what you're offering and what your neighbors need (or vice versa).
+                  </p>
+                </div>
+              )
             ) : null}
             
           </div>
@@ -547,6 +644,33 @@ export default function DashboardPage() {
                   value={newJob.title}
                   onChange={(e) => setNewJob({ ...newJob, title: e.target.value })}
                 />
+              </div>
+              
+              <div className="flex gap-4">
+                <div className="flex-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Range (km)
+                  </label>
+                  <select
+                    className="w-full border-gray-300 rounded-xl shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-3 bg-gray-50 border"
+                    value={newJob.range}
+                    onChange={(e) => setNewJob({ ...newJob, range: Number(e.target.value) })}
+                  >
+                    {[1, 2, 4, 5, 10, 20].map((r) => <option key={r} value={r}>{r} km</option>)}
+                  </select>
+                </div>
+                <div className="flex-[2]">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    What will you give in return?
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full border-gray-300 rounded-xl shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-3 bg-gray-50 border"
+                    placeholder="e.g. $10, a cup of coffee..."
+                    value={newJob.reward}
+                    onChange={(e) => setNewJob({ ...newJob, reward: e.target.value })}
+                  />
+                </div>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
