@@ -85,8 +85,8 @@ export async function GET(req) {
         
         console.log(`[Suggestions] Similarity between "${mJob.title}" and "${bJob.title}" = ${similarity.toFixed(3)}`);
 
-        // Threshold for a match (0.5 to 0.7 usually yields great semantic matches)
-        if (similarity > 0.55) {
+        // Threshold for a match (lowered to 0.45 for Hugging Face MiniLM model)
+        if (similarity > 0.45) {
           const matchPercentage = Math.round(similarity * 100);
 
           matches.push({
