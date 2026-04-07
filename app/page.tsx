@@ -7,11 +7,10 @@ export default function LandingPage() {
       <header className="w-full bg-white/80 backdrop-blur-xl sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-[#457B9D] rounded-xl flex items-center justify-center shadow-md shadow-[#A8DADC]">
-              <span className="text-white font-bold text-xl">S</span>
-            </div>
-            <span className="font-extrabold text-2xl text-[#1D3557] tracking-tight">
-              Social-Phia
+            <img src="/icon.png" alt="Social-Phia Logo" className="w-10 h-10 object-contain" />
+            <span className="font-black text-2xl tracking-tighter drop-shadow-sm">
+              <span className="text-[#1D3557]">Social</span>
+              <span className="text-[#E07A5F]">-Phia</span>
             </span>
           </div>
           <nav className="flex items-center gap-4">

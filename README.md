@@ -1,25 +1,69 @@
-# 🏘️ Social Phia - Neighborhood Board
+# 🏘️ Social-Phia
 
-A modern, location-based neighborhood assistance application. Users can post tasks they need help with, and others in their vicinity can accept and assist them. Once a job is accepted, both users can coordinate in real-time via a dedicated chat room.
+> **Your neighborhood, connected like never before.**
+
+Social-Phia is a modern, location-based neighborhood assistance and community-building platform. It uses secure geospatial technology to connect you exclusively with the people who live right around the corner. Whether you need a hand moving a couch, want to trade home-baked goods for dog walking, or just want to share local news, Social-Phia bridges the gap between trusted neighbors.
+
+![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)
+![React](https://img.shields.io/badge/React-19-blue?style=for-the-badge&logo=react)
+![MongoDB](https://img.shields.io/badge/MongoDB-Geospatial-47A248?style=for-the-badge&logo=mongodb)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css)
+![Pusher](https://img.shields.io/badge/Pusher-Real--Time-indigo?style=for-the-badge)
+
+---
+
+## 📌 Important Links
+
+| Resource | Link |
+| -------- | ---- |
+| **🌍 Live Website** | [Insert Live Site URL Here](#) |
+| **🎥 Demo Video** | [Watch the Demo on YouTube/Vimeo Here](#) |
+| **📊 Pitch Deck (PPT)** | [View Presentation on Google Slides/Canva Here](#) |
 
 ## ✨ Features
 
-- **Geospatial Job Matching:** View requests from neighbors in your local area using automatic GPS or manual coordinate entry.
-- **Job Management:** Post jobs, view active requests, track your ongoing tasks, and reopen uncompleted requests.
-- **Real-Time Ready Chat:** Integrated chat room for task coordination once a job is accepted.
-- **Modern UI/UX:** Built with Tailwind CSS, featuring glass-morphism, responsive design, smooth animations, and intuitive empty states.
-- **Secure Authentication:** User accounts powered by NextAuth.js.
+- **📍 Hyper-Local Geospatial Engine:** Connects you strictly with people in your immediate vicinity (1km, 5km, 10km radius).
+- **🤝 Skill & Favor Exchange:** Post tasks you need help with, offer a reward or exchange, and let nearby neighbors step up to assist.
+- **💬 Real-Time Chat Coordination:** Instantly securely chat with the neighbor who accepted your task using WebSockets (Pusher).
+- **📰 Neighborhood News & Alerts:** Share general news, local events, and critical safety alerts with everyone in your grid.
+- **✨ Smart Suggestions:** The platform intelligently finds direct matches between what you're offering and what your neighbors need.
+- **🎨 Modern, Accessible UI:** Beautiful Material Design 3 (M3) inspired interface with a warm, custom color palette (`#F1FAEE`, `#1D3557`, `#E07A5F`, `#457B9D`, etc.).
+
+---
+
+## 🛠️ How It Works
+
+1. **Join Your Grid:** Sign up and allow basic location access. Social-Phia anchors your account to your current coordinates (or manually set ones), ensuring you only see requests within a walkable or short driving distance.
+2. **Post or Browse Requests:** Need a tool? Help moving a box? Post a job to the local board. You can offer cash, a return favor, or simply ask for a good deed.
+3. **Connect & Complete:** Once a neighbor accepts your request, our platform opens a secure, real-time chat room to coordinate final details.
 
 ## 🚀 Tech Stack
 
-- **Framework:** Next.js (App Router)
-- **Styling:** Tailwind CSS
-- **Database:** MongoDB (Mongoose) with Geospatial (`2dsphere`) indexing
-- **Authentication:** NextAuth.js
+- **Frontend:** Next.js (App Router), React, Tailwind CSS
+- **Backend:** Next.js API Routes (Serverless)
+- **Database:** MongoDB (Mongoose) utilizing powerful `2dsphere` geospatial indexing
+- **Authentication:** NextAuth.js (Credentials/Session management)
+- **Real-Time WebSockets:** Pusher
 
-## 🛠️ Getting Started
+---
 
-### 1. Install Dependencies
+## 💻 Getting Started
+
+### Prerequisites
+
+Before you begin, ensure you have the following installed:
+- Node.js (v18 or higher)
+- A MongoDB Atlas account (or local MongoDB instance)
+- A Pusher account for real-time chat
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/yourusername/social-phia.git
+cd social-phia
+```
+
+### 2. Install Dependencies
 
 ```bash
 npm install

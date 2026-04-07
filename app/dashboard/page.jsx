@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function DashboardPage() {
   const { data: session, status } = useSession();
@@ -295,10 +296,18 @@ export default function DashboardPage() {
       <header className="bg-white/90 backdrop-blur-xl sticky top-0 z-40 shadow-sm border-b border-[#A8DADC]/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-[#457B9D] rounded-xl flex items-center justify-center shadow-md shadow-[#457B9D]/30">
-              <span className="text-white font-bold text-xl">S</span>
-            </div>
-            <span className="font-extrabold text-2xl text-[#1D3557] tracking-tight">Social-Phia</span>
+            {/* <img src="/icon.png" alt="Social-Phia Logo" className="w-10 h-10 object-contain" /> */}
+            <Image
+              src="/icon.png"
+              alt="Social-Phia Logo"
+              width={40}
+              height={40}
+              className="object-contain"
+            />
+            <span className="font-black text-2xl tracking-tighter drop-shadow-sm">
+              <span className="text-[#1D3557]">Social</span>
+              <span className="text-[#E07A5F]">-Phia</span>
+            </span>
           </Link>
           <div className="flex items-center gap-4">
             <Link href="/profile" className="text-sm font-bold text-[#1D3557] hidden sm:block bg-[#A8DADC]/30 hover:bg-[#A8DADC]/50 px-4 py-2 rounded-full transition-colors cursor-pointer">
