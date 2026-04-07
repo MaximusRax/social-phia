@@ -25,10 +25,10 @@ export default async function ChatPage({ params }) {
 
     if (!job) {
       return (
-        <div className="p-10 text-center min-h-screen flex flex-col items-center justify-center bg-[#f8f9fa] font-sans">
-          <h1 className="text-3xl font-extrabold text-slate-900 mb-2 tracking-tight">Job not found</h1>
-          <p className="text-slate-600 font-medium">The job ID {jobId} does not exist in our records.</p>
-          <Link href="/dashboard" className="text-indigo-600 font-bold mt-6 inline-block bg-indigo-50 px-6 py-3 rounded-full hover:bg-indigo-100 transition-colors">Return to Dashboard</Link>
+        <div className="p-10 text-center min-h-screen flex flex-col items-center justify-center bg-[#F1FAEE] font-sans">
+          <h1 className="text-3xl font-extrabold text-[#1D3557] mb-2 tracking-tight">Job not found</h1>
+          <p className="text-[#3D405B] font-medium">The job ID {jobId} does not exist in our records.</p>
+          <Link href="/dashboard" className="text-[#457B9D] font-bold mt-6 inline-block bg-[#A8DADC]/30 px-6 py-3 rounded-full hover:bg-[#A8DADC]/50 transition-colors">Return to Dashboard</Link>
         </div>
       );
     }
@@ -44,10 +44,10 @@ export default async function ChatPage({ params }) {
     // SCENARIO 1: The user has nothing to do with this job
     if (!isPoster && !isAccepter) {
       return (
-        <div className="min-h-screen flex flex-col items-center justify-center p-10 text-center bg-[#f8f9fa] font-sans">
-          <h2 className="text-red-600 font-extrabold text-4xl mb-4 tracking-tight">Access Denied</h2>
-          <p className="text-slate-600 font-medium mb-8 text-lg">You are not authorized to view this chat.</p>
-          <Link href="/dashboard" className="bg-slate-900 text-white font-bold px-8 py-4 rounded-full hover:bg-slate-800 transition-transform active:scale-95 shadow-md">Return to Dashboard</Link>
+        <div className="min-h-screen flex flex-col items-center justify-center p-10 text-center bg-[#F1FAEE] font-sans">
+          <h2 className="text-[#E63946] font-extrabold text-4xl mb-4 tracking-tight">Access Denied</h2>
+          <p className="text-[#3D405B] font-medium mb-8 text-lg">You are not authorized to view this chat.</p>
+          <Link href="/dashboard" className="bg-[#1D3557] text-white font-bold px-8 py-4 rounded-full hover:bg-[#3D405B] transition-transform active:scale-95 shadow-md">Return to Dashboard</Link>
         </div>
       );
     }
@@ -55,16 +55,16 @@ export default async function ChatPage({ params }) {
     // SCENARIO 2: The creator is looking at the chat, but nobody has accepted it yet
     if (isPoster && job.status === 'open') {
       return (
-        <div className="min-h-screen bg-[#f8f9fa] py-20 px-4 flex flex-col items-center justify-center font-sans">
+        <div className="min-h-screen bg-[#F1FAEE] py-20 px-4 flex flex-col items-center justify-center font-sans">
           <div className="bg-white p-12 rounded-[2.5rem] shadow-xl shadow-slate-200/50 text-center max-w-md w-full relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-2 bg-indigo-600"></div>
+            <div className="absolute top-0 left-0 w-full h-2 bg-[#457B9D]"></div>
             <div className="text-6xl mb-8 animate-pulse">⏳</div>
-            <h2 className="text-3xl font-extrabold text-slate-900 mb-4 tracking-tight">Waiting for a neighbor</h2>
-            <p className="text-slate-600 mb-10 leading-relaxed font-medium">
+            <h2 className="text-3xl font-extrabold text-[#1D3557] mb-4 tracking-tight">Waiting for a neighbor</h2>
+            <p className="text-[#3D405B] mb-10 leading-relaxed font-medium">
               Your request for <strong>&quot;{job.title}&quot;</strong> is currently on the neighborhood board.
               This chat room will activate as soon as someone accepts the job.
             </p>
-            <Link href="/dashboard" className="inline-flex items-center justify-center bg-indigo-600 text-white px-8 py-4 rounded-full hover:bg-indigo-700 font-bold shadow-md transition-all active:scale-95 w-full text-lg">
+            <Link href="/dashboard" className="inline-flex items-center justify-center bg-[#457B9D] text-white px-8 py-4 rounded-full hover:bg-[#1D3557] font-bold shadow-md transition-all active:scale-95 w-full text-lg">
               Return to Dashboard
             </Link>
           </div>
@@ -92,22 +92,22 @@ export default async function ChatPage({ params }) {
     const otherPerson = isPoster ? job.acceptedBy : job.postedBy;
 
     return (
-      <div className="min-h-screen bg-[#f8f9fa] py-10 px-4 font-sans">
+      <div className="min-h-screen bg-[#F1FAEE] py-10 px-4 font-sans">
         <div className="max-w-4xl mx-auto mb-6">
-          <Link href="/dashboard" className="inline-flex items-center gap-2 px-5 py-2.5 bg-white rounded-full text-slate-700 hover:text-indigo-600 hover:bg-indigo-50 transition-colors font-bold shadow-sm mb-6 border border-slate-100">
+          <Link href="/dashboard" className="inline-flex items-center gap-2 px-5 py-2.5 bg-white rounded-full text-[#1D3557] hover:text-[#457B9D] hover:bg-[#A8DADC]/30 transition-colors font-bold shadow-sm mb-6 border border-[#A8DADC]/50">
             <span className="text-xl leading-none pb-0.5">&larr;</span> Back to Dashboard
           </Link>
-          <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100">
+          <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-[#A8DADC]/50">
             <div className="flex justify-between items-start">
               <div>
-                <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">{job.title}</h1>
-                <p className="text-sm text-slate-500 mt-2 font-medium">
-                  Chatting with: <Link href={`/profile/${otherPerson?._id}`} className="font-medium text-indigo-600 hover:underline">{otherPerson?.name}</Link>
+                <h1 className="text-2xl font-extrabold text-[#1D3557] tracking-tight">{job.title}</h1>
+                <p className="text-sm text-[#3D405B]/70 mt-2 font-medium">
+                  Chatting with: <Link href={`/profile/${otherPerson?._id}`} className="font-medium text-[#457B9D] hover:underline">{otherPerson?.name}</Link>
                 </p>
               </div>
-              <span className="bg-indigo-100 text-indigo-700 text-xs tracking-wider uppercase font-extrabold px-4 py-1.5 rounded-full">{job.status}</span>
+              <span className="bg-[#457B9D]/20 text-[#1D3557] text-xs tracking-wider uppercase font-extrabold px-4 py-1.5 rounded-full">{job.status}</span>
             </div>
-            <p className="text-slate-600 mt-4 leading-relaxed font-medium">{job.description}</p>
+            <p className="text-[#3D405B] mt-4 leading-relaxed font-medium">{job.description}</p>
           </div>
         </div>
 
