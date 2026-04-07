@@ -32,45 +32,45 @@ export default function LoginPage() {
    }
  };
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
-      <div className="w-full max-w-md space-y-8 rounded-xl bg-white p-8 shadow-lg">
+    <div className="flex min-h-screen items-center justify-center bg-[#f8f9fa] p-4 font-sans">
+      <div className="w-full max-w-md space-y-8 rounded-[2rem] bg-white p-10 shadow-xl shadow-slate-200/50">
         <div>
-          <h2 className="text-center text-3xl font-extrabold text-gray-900">
+          <h2 className="text-center text-4xl font-extrabold text-slate-900 tracking-tight">
             Welcome Back
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
+          <p className="mt-3 text-center text-base text-slate-600 font-medium">
             Log in to see what your neighborhood needs
           </p>
         </div>
 
         {error && (
-          <div className="bg-red-50 p-3 rounded-md border border-red-200">
-            <p className="text-red-600 text-sm text-center font-medium">
+          <div className="bg-red-50 p-4 rounded-2xl">
+            <p className="text-red-600 text-sm text-center font-bold">
               {error}
             </p>
           </div>
         )}
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="space-y-4 rounded-md shadow-sm">
+          <div className="space-y-5">
             <div>
-              <label className="sr-only">Email address</label>
+              <label className="block text-sm font-bold text-slate-700 mb-2 pl-2">Email address</label>
               <input
                 type="email"
                 required
-                className="relative block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                placeholder="Email address"
+                className="relative block w-full rounded-2xl bg-slate-100 border-none px-5 py-4 text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-600 sm:text-sm font-medium transition-all"
+                placeholder="hello@neighbor.com"
                 onChange={(e) =>
                   setFormData({ ...formData, email: e.target.value })
                 }
               />
             </div>
             <div>
-              <label className="sr-only">Password</label>
+              <label className="block text-sm font-bold text-slate-700 mb-2 pl-2">Password</label>
               <input
                 type="password"
                 required
-                className="relative block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                className="relative block w-full rounded-2xl bg-slate-100 border-none px-5 py-4 text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-600 sm:text-sm font-medium transition-all"
                 placeholder="Password"
                 onChange={(e) =>
                   setFormData({ ...formData, password: e.target.value })
@@ -82,18 +82,18 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 transition-colors"
+            className="group relative flex w-full justify-center rounded-full bg-indigo-600 px-6 py-4 text-sm font-bold text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 transition-all hover:shadow-md active:scale-95 mt-8"
           >
             {loading ? "Signing in..." : "Sign In"}
           </button>
         </form>
 
-        <div className="text-center mt-4">
-          <p className="text-sm text-gray-600">
+        <div className="text-center mt-6">
+          <p className="text-sm text-slate-600 font-medium">
             Don&apos;t have an account?{" "}
             <Link
               href="/register"
-              className="font-medium text-indigo-600 hover:text-indigo-500"
+              className="font-bold text-indigo-600 hover:text-indigo-700 hover:underline"
             >
               Join your neighborhood
             </Link>

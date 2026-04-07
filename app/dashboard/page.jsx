@@ -283,30 +283,30 @@ export default function DashboardPage() {
 
   if (status === "loading" || !session) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <div className="animate-spin w-12 h-12 border-4 border-indigo-600 border-t-transparent rounded-full"></div>
+      <div className="min-h-screen flex items-center justify-center bg-[#f8f9fa]">
+        <div className="animate-spin w-14 h-14 border-4 border-indigo-200 border-t-indigo-600 rounded-full"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50/40">
+    <div className="min-h-screen bg-[#f8f9fa] font-sans text-slate-900 pb-12">
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-md sticky top-0 z-40 border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <header className="bg-white/90 backdrop-blur-xl sticky top-0 z-40 shadow-sm border-b border-slate-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
+            <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-md shadow-indigo-200">
               <span className="text-white font-bold text-xl">S</span>
             </div>
-            <span className="font-bold text-xl text-slate-900 tracking-tight">Social-Phia</span>
+            <span className="font-extrabold text-2xl text-slate-900 tracking-tight">Social-Phia</span>
           </Link>
           <div className="flex items-center gap-4">
-            <span className="text-sm font-medium text-gray-700 hidden sm:block">
+            <span className="text-sm font-bold text-slate-700 hidden sm:block bg-slate-100 px-4 py-2 rounded-full">
               Hello, {session.user?.name || "Neighbor"}
             </span>
             <button
               onClick={() => signOut({ callbackUrl: "/" })}
-              className="text-sm text-gray-500 hover:text-red-600 transition-colors font-medium"
+              className="text-sm text-slate-600 hover:text-red-600 hover:bg-red-50 px-4 py-2 rounded-full transition-colors font-bold"
             >
               Log out
             </button>
@@ -315,144 +315,144 @@ export default function DashboardPage() {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
-          <h1 className="text-3xl font-extrabold text-gray-900">Dashboard</h1>
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-6">
+          <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight">Dashboard</h1>
           <div className="flex gap-3">
             <button
               onClick={() => setIsModalOpen(true)}
-              className="bg-indigo-600 text-white px-5 py-2.5 rounded-xl hover:bg-indigo-700 transition-colors font-medium shadow-sm shadow-indigo-200"
+              className="bg-indigo-600 text-white px-6 py-3 rounded-full hover:bg-indigo-700 transition-all font-bold shadow-md hover:shadow-lg active:scale-95 flex items-center gap-2"
             >
-              + Post Request
+              <span>+</span> Post Request
             </button>
             <button
               onClick={() => setIsNewsModalOpen(true)}
-              className="bg-emerald-600 text-white px-5 py-2.5 rounded-xl hover:bg-emerald-700 transition-colors font-medium shadow-sm shadow-emerald-200"
+              className="bg-emerald-100 text-emerald-800 px-6 py-3 rounded-full hover:bg-emerald-200 transition-all font-bold active:scale-95 flex items-center gap-2"
             >
-              + Post News
+              <span>+</span> Share News
             </button>
           </div>
         </div>
 
         {/* Location & Filtering Panel */}
-        <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm mb-8 flex flex-wrap items-end gap-5">
+        <div className="bg-white p-6 rounded-[2rem] shadow-sm mb-8 flex flex-wrap items-end gap-5 border border-slate-100">
           <div>
-            <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Location Setup</label>
-            <button onClick={handleAutoLocation} className="bg-indigo-50 text-indigo-700 px-4 py-2 rounded-xl text-sm font-semibold hover:bg-indigo-100 transition">
+            <label className="block text-xs font-extrabold text-slate-500 uppercase tracking-wider mb-2 pl-1">Location Setup</label>
+            <button onClick={handleAutoLocation} className="bg-indigo-50 text-indigo-700 px-5 py-3 rounded-2xl text-sm font-bold hover:bg-indigo-100 transition-colors">
               Auto Detect 📍
             </button>
           </div>
           <div className="flex gap-2">
             <div>
-              <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Latitude</label>
-              <input type="number" step="any" value={locationInput.lat} onChange={e => setLocationInput({...locationInput, lat: e.target.value})} className="border border-gray-300 rounded-lg p-2 w-28 text-sm focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="e.g. 40.71" />
+              <label className="block text-xs font-extrabold text-slate-500 uppercase tracking-wider mb-2 pl-1">Latitude</label>
+              <input type="number" step="any" value={locationInput.lat} onChange={e => setLocationInput({...locationInput, lat: e.target.value})} className="bg-slate-50 border-none rounded-2xl p-3 w-28 text-sm font-medium focus:ring-2 focus:ring-indigo-600 outline-none" placeholder="e.g. 40.71" />
             </div>
             <div>
-              <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Longitude</label>
-              <input type="number" step="any" value={locationInput.lng} onChange={e => setLocationInput({...locationInput, lng: e.target.value})} className="border border-gray-300 rounded-lg p-2 w-28 text-sm focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="e.g. -74.00" />
+              <label className="block text-xs font-extrabold text-slate-500 uppercase tracking-wider mb-2 pl-1">Longitude</label>
+              <input type="number" step="any" value={locationInput.lng} onChange={e => setLocationInput({...locationInput, lng: e.target.value})} className="bg-slate-50 border-none rounded-2xl p-3 w-28 text-sm font-medium focus:ring-2 focus:ring-indigo-600 outline-none" placeholder="e.g. -74.00" />
             </div>
-            <button onClick={handleManualLocation} className="bg-gray-100 text-gray-700 px-4 py-2 rounded-xl text-sm font-semibold hover:bg-gray-200 self-end transition">
+            <button onClick={handleManualLocation} className="bg-slate-100 text-slate-700 px-5 py-3 rounded-2xl text-sm font-bold hover:bg-slate-200 self-end transition-colors">
               Set Manual
             </button>
           </div>
           <div>
-            <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Search Radius</label>
-            <select value={radius} onChange={e => setRadius(Number(e.target.value))} className="border border-gray-300 rounded-lg p-2 text-sm bg-white font-medium focus:ring-2 focus:ring-indigo-500 outline-none min-w-[100px]">
+            <label className="block text-xs font-extrabold text-slate-500 uppercase tracking-wider mb-2 pl-1">Search Radius</label>
+            <select value={radius} onChange={e => setRadius(Number(e.target.value))} className="bg-slate-50 border-none rounded-2xl p-3 text-sm font-bold focus:ring-2 focus:ring-indigo-600 outline-none min-w-[120px] cursor-pointer">
               {[1, 2, 4, 5, 10].map(r => <option key={r} value={r}>{r} km</option>)}
             </select>
           </div>
           {location && (
-            <div className="ml-auto flex items-center text-sm text-emerald-600 font-bold bg-emerald-50 px-3 py-1.5 rounded-lg border border-emerald-100">
+            <div className="ml-auto flex items-center text-sm text-emerald-700 font-bold bg-emerald-50 px-4 py-2 rounded-full">
               ✓ Active Location Filter
             </div>
           )}
         </div>
 
         {/* Tabs */}
-        <div className="flex space-x-1 bg-gray-100 p-1 rounded-xl mb-8 max-w-4xl flex-wrap">
+        <div className="flex space-x-2 bg-slate-200/50 p-1.5 rounded-full mb-10 max-w-4xl overflow-x-auto hide-scrollbar">
           <button
             onClick={() => setActiveTab("board")}
-            className={`flex-1 py-2.5 text-sm font-medium rounded-lg transition-all ${
+            className={`flex-1 min-w-max px-6 py-3 text-sm font-bold rounded-full transition-all ${
               activeTab === "board"
                 ? "bg-white text-indigo-700 shadow-sm"
-                : "text-gray-500 hover:text-gray-900 hover:bg-gray-200/50"
+                : "text-slate-600 hover:text-slate-900 hover:bg-slate-200"
             }`}
           >
             Neighborhood Board
           </button>
           <button
             onClick={() => setActiveTab("my-tasks")}
-            className={`flex-1 py-2.5 text-sm font-medium rounded-lg transition-all ${
+            className={`flex-1 min-w-max px-6 py-3 text-sm font-bold rounded-full transition-all ${
               activeTab === "my-tasks"
                 ? "bg-white text-indigo-700 shadow-sm"
-                : "text-gray-500 hover:text-gray-900 hover:bg-gray-200/50"
+                : "text-slate-600 hover:text-slate-900 hover:bg-slate-200"
             }`}
           >
             My Active Tasks
           </button>
           <button
             onClick={() => setActiveTab("news")}
-            className={`flex-1 py-2.5 text-sm font-medium rounded-lg transition-all ${
+            className={`flex-1 min-w-max px-6 py-3 text-sm font-bold rounded-full transition-all ${
               activeTab === "news"
                 ? "bg-white text-emerald-700 shadow-sm"
-                : "text-gray-500 hover:text-gray-900 hover:bg-gray-200/50"
+                : "text-slate-600 hover:text-slate-900 hover:bg-slate-200"
             }`}
           >
             Neighborhood News
           </button>
           <button
             onClick={() => setActiveTab("suggestions")}
-            className={`flex-1 py-2.5 text-sm font-medium rounded-lg transition-all ${
+            className={`flex-1 min-w-max px-6 py-3 text-sm font-bold rounded-full transition-all flex items-center justify-center gap-1 ${
               activeTab === "suggestions"
                 ? "bg-white text-purple-700 shadow-sm"
-                : "text-gray-500 hover:text-gray-900 hover:bg-gray-200/50"
+                : "text-slate-600 hover:text-slate-900 hover:bg-slate-200"
             }`}
           >
-            Suggestions ✨
+            <span>Suggestions</span> <span>✨</span>
           </button>
         </div>
 
         {/* Content Area */}
         {loading ? (
           <div className="py-20 flex justify-center">
-            <div className="animate-spin w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full"></div>
+            <div className="animate-spin w-12 h-12 border-4 border-indigo-200 border-t-indigo-600 rounded-full"></div>
           </div>
         ) : (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {activeTab === "board" ? (
               jobs.length > 0 ? (
                 jobs.map((job) => (
                   <div
                     key={job._id}
-                    className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow flex flex-col"
+                    className="bg-white p-6 rounded-[2rem] shadow-sm hover:shadow-xl transition-all flex flex-col border border-slate-100"
                   >
                     <div className="flex-1">
-                      <span className="inline-block px-3 py-1 bg-green-50 text-green-700 text-xs font-bold uppercase tracking-wider rounded-lg mb-3">
+                      <span className="inline-block px-4 py-1.5 bg-emerald-50 text-emerald-700 text-xs font-extrabold uppercase tracking-wider rounded-full mb-4">
                         Open
                       </span>
-                      <h3 className="text-xl font-bold text-gray-900 mb-2">{job.title}</h3>
+                      <h3 className="text-2xl font-bold text-slate-900 mb-3 tracking-tight leading-snug">{job.title}</h3>
                       {job.reward && (
-                        <p className="text-sm font-medium text-emerald-600 mb-2">
-                          🎁 Return: {job.reward}
+                        <p className="text-sm font-bold text-indigo-700 bg-indigo-50 px-3 py-2 rounded-xl mb-4 inline-block">
+                          🎁 Return: <span className="font-medium">{job.reward}</span>
                         </p>
                       )}
-                      <p className="text-gray-600 text-sm line-clamp-3 mb-4">{job.description}</p>
-                      <p className="text-xs text-gray-400 mb-4">
-                        Posted by {job.postedBy?.name || "a neighbor"}
+                      <p className="text-slate-600 text-[15px] leading-relaxed line-clamp-3 mb-5">{job.description}</p>
+                      <p className="text-xs font-bold text-slate-400 mb-6">
+                        POSTED BY {String(job.postedBy?.name || "NEIGHBOR").toUpperCase()}
                       </p>
                     </div>
                     <button
                       onClick={() => handleAcceptJob(job._id)}
-                      className="w-full bg-gray-900 text-white font-medium py-2.5 rounded-xl hover:bg-indigo-600 transition-colors"
+                      className="w-full bg-indigo-600 text-white font-bold py-3.5 rounded-full hover:bg-indigo-700 transition-all active:scale-95 shadow-sm"
                     >
                       Accept & Help
                     </button>
                   </div>
                 ))
               ) : (
-                <div className="col-span-full py-16 text-center bg-white border border-gray-100 rounded-3xl">
+                <div className="col-span-full py-20 text-center bg-white border border-slate-100 rounded-[2.5rem] shadow-sm">
                   <div className="text-4xl mb-4">🏘️</div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">It's quiet around here</h3>
-                  <p className="text-gray-500 max-w-sm mx-auto">
+                  <h3 className="text-xl font-extrabold text-slate-900 mb-2">It's quiet around here</h3>
+                  <p className="text-slate-500 max-w-sm mx-auto font-medium">
                     There are no open requests in your neighborhood right now. Be the first to post a request!
                   </p>
                 </div>
@@ -466,57 +466,56 @@ export default function DashboardPage() {
                 return (
                   <div
                     key={job._id}
-                    className="bg-white p-6 rounded-2xl border border-indigo-50 shadow-sm hover:shadow-md transition-shadow flex flex-col relative overflow-hidden"
+                    className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-xl transition-all flex flex-col relative overflow-hidden"
                   >
                     {job.status === "in-progress" && (
-                      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 to-purple-500"></div>
+                      <div className="absolute top-0 left-0 w-full h-1.5 bg-indigo-600"></div>
                     )}
                     
                     <div className="flex-1 mt-2">
                       <div className="flex justify-between items-start mb-3">
                         <span
-                          className={`px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-lg ${
+                          className={`px-4 py-1.5 text-xs font-extrabold uppercase tracking-wider rounded-full ${
                             job.status === "open"
-                              ? "bg-yellow-50 text-yellow-700"
+                              ? "bg-amber-100 text-amber-800"
                               : job.status === "in-progress"
-                              ? "bg-blue-50 text-blue-700"
-                              : "bg-gray-100 text-gray-600"
+                              ? "bg-indigo-100 text-indigo-700"
+                              : "bg-slate-100 text-slate-600"
                           }`}
                         >
                           {job.status}
                         </span>
-                        <span className="text-xs font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded-md">
+                        <span className="text-xs font-bold text-slate-600 bg-slate-100 px-3 py-1.5 rounded-full">
                           {isPoster ? "Your Request" : "Helping Out"}
                         </span>
                       </div>
 
-                      <h3 className="text-xl font-bold text-gray-900 mb-2">{job.title}</h3>
+                      <h3 className="text-2xl font-bold text-slate-900 mb-3 tracking-tight">{job.title}</h3>
                       {job.reward && (
-                        <p className="text-sm font-medium text-emerald-600 mb-2">
-                          🎁 Return: {job.reward}
+                        <p className="text-sm font-bold text-indigo-700 bg-indigo-50 px-3 py-2 rounded-xl mb-4 inline-block">
+                          🎁 Return: <span className="font-medium">{job.reward}</span>
                         </p>
                       )}
-                      <p className="text-gray-600 text-sm line-clamp-2 mb-4">{job.description}</p>
+                      <p className="text-slate-600 text-[15px] leading-relaxed line-clamp-2 mb-4">{job.description}</p>
                     </div>
 
                     <div className="mt-4 flex flex-col gap-2">
                       {job.status === "in-progress" ? (
                         <Link
                           href={`/chat/${job._id}`}
-                          className="w-full text-center bg-indigo-600 text-white font-medium py-2.5 rounded-xl hover:bg-indigo-700 transition-colors"
+                          className="w-full text-center bg-indigo-600 text-white font-bold py-3.5 rounded-full hover:bg-indigo-700 transition-all active:scale-95 shadow-sm"
                         >
                           Open Live Chat
                         </Link>
                       ) : job.status === "open" ? (
                         <Link
                           href={`/chat/${job._id}`}
-                          className="w-full text-center bg-gray-100 text-gray-600 font-medium py-2.5 rounded-xl hover:bg-gray-200 transition-colors"
+                          className="w-full text-center bg-slate-100 text-slate-700 font-bold py-3.5 rounded-full hover:bg-slate-200 transition-all"
                         >
                           Waiting for a helper...
                         </Link>
                       ) : null}
 
-                      {/* Only poster can reopen a closed/completed job or if someone canceled */}
                       {isPoster && job.status !== "open" && (
                         <button
                           onClick={() => {
@@ -528,7 +527,7 @@ export default function DashboardPage() {
                               handleReopenJob(job._id);
                             }
                           }}
-                          className="w-full text-center text-sm font-medium text-red-600 py-2 hover:bg-red-50 rounded-xl transition-colors mt-2"
+                          className="w-full text-center text-sm font-bold text-red-600 py-2.5 hover:bg-red-50 rounded-full transition-colors mt-2"
                         >
                           {job.status === "in-progress" ? "Cancel Helper & Reopen" : "Reopen Request"}
                         </button>
@@ -538,10 +537,10 @@ export default function DashboardPage() {
                 );
               })
               ) : (
-                <div className="col-span-full py-16 text-center bg-white border border-gray-100 rounded-3xl">
+                <div className="col-span-full py-20 text-center bg-white border border-slate-100 rounded-[2.5rem] shadow-sm">
                   <div className="text-4xl mb-4">📋</div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">No active tasks</h3>
-                  <p className="text-gray-500 max-w-sm mx-auto">
+                  <h3 className="text-xl font-extrabold text-slate-900 mb-2">No active tasks</h3>
+                  <p className="text-slate-500 max-w-sm mx-auto font-medium">
                     You haven't posted any requests or accepted any jobs recently.
                   </p>
                 </div>
@@ -551,25 +550,25 @@ export default function DashboardPage() {
                 news.map((post) => (
                   <div
                     key={post._id}
-                    className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col"
+                    className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-xl transition-all flex flex-col"
                   >
                     {post.image && (
-                      <img src={post.image} alt="News upload" className="w-full h-48 object-cover rounded-xl mb-4 border border-gray-100" />
+                      <img src={post.image} alt="News upload" className="w-full h-52 object-cover rounded-2xl mb-5" />
                     )}
-                    <span className="inline-block px-3 py-1 bg-purple-50 text-purple-700 text-xs font-bold uppercase tracking-wider rounded-lg mb-3 w-max">
+                    <span className="inline-block px-4 py-1.5 bg-emerald-50 text-emerald-800 text-xs font-extrabold uppercase tracking-wider rounded-full mb-4 w-max">
                       {post.type}
                     </span>
-                    <p className="text-gray-800 font-medium text-lg mb-4 whitespace-pre-wrap">{post.content}</p>
-                    <p className="text-xs text-gray-400 mt-auto pt-4 border-t border-gray-50">
-                      Posted by {post.author?.name || "a neighbor"}
+                    <p className="text-slate-800 font-medium text-lg mb-6 whitespace-pre-wrap leading-relaxed">{post.content}</p>
+                    <p className="text-xs font-bold text-slate-400 mt-auto pt-5 border-t border-slate-50 uppercase tracking-wide">
+                      POSTED BY {post.author?.name || "NEIGHBOR"}
                     </p>
                   </div>
                 ))
               ) : (
-                <div className="col-span-full py-16 text-center bg-white border border-gray-100 rounded-3xl">
+                <div className="col-span-full py-20 text-center bg-white border border-slate-100 rounded-[2.5rem] shadow-sm">
                   <div className="text-4xl mb-4">📰</div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">No news yet</h3>
-                  <p className="text-gray-500 max-w-sm mx-auto">
+                  <h3 className="text-xl font-extrabold text-slate-900 mb-2">No news yet</h3>
+                  <p className="text-slate-500 max-w-sm mx-auto font-medium">
                     There are no news posts in your neighborhood right now. Be the first to share!
                   </p>
                 </div>
@@ -577,38 +576,38 @@ export default function DashboardPage() {
             ) : activeTab === "suggestions" ? (
               suggestions.length > 0 ? (
                 suggestions.map((match) => (
-                  <div key={match.id} className="bg-gradient-to-br from-indigo-50 to-purple-50 p-6 rounded-2xl border border-indigo-100 shadow-sm flex flex-col">
-                    <span className="inline-block px-3 py-1 bg-indigo-100 text-indigo-800 text-xs font-bold uppercase tracking-wider rounded-lg mb-3 w-max">
+                  <div key={match.id} className="bg-gradient-to-br from-indigo-50/50 to-purple-50/50 p-6 rounded-[2rem] border border-indigo-100 shadow-sm hover:shadow-xl transition-all flex flex-col">
+                    <span className="inline-block px-4 py-1.5 bg-indigo-100 text-indigo-800 text-xs font-extrabold uppercase tracking-wider rounded-full mb-4 w-max">
                       Match Found ✨
                     </span>
-                    <p className="text-sm font-bold text-purple-700 mb-4">{match.reason}</p>
+                    <p className="text-[15px] font-bold text-purple-800 mb-5 leading-relaxed">{match.reason}</p>
                     
-                    <div className="bg-white p-3 rounded-xl mb-3 border border-indigo-50 text-sm">
-                      <p className="text-xs text-gray-500 mb-1">Your Request:</p>
-                      <p className="font-semibold text-gray-800">{match.myJob.title}</p>
+                    <div className="bg-white p-4 rounded-2xl mb-3 border border-white shadow-sm text-sm">
+                      <p className="text-xs font-bold text-slate-400 mb-1 uppercase tracking-wide">Your Request</p>
+                      <p className="font-bold text-slate-800">{match.myJob.title}</p>
                     </div>
 
-                    <div className="bg-white p-3 rounded-xl mb-4 border border-indigo-50 text-sm">
-                      <p className="text-xs text-gray-500 mb-1">Their Request:</p>
-                      <p className="font-semibold text-gray-800">{match.theirJob.title}</p>
+                    <div className="bg-white p-4 rounded-2xl mb-6 border border-white shadow-sm text-sm">
+                      <p className="text-xs font-bold text-slate-400 mb-1 uppercase tracking-wide">Their Request</p>
+                      <p className="font-bold text-slate-800">{match.theirJob.title}</p>
                       {match.theirJob.reward && (
-                        <p className="text-emerald-600 font-medium text-xs mt-1">🎁 Return: {match.theirJob.reward}</p>
+                        <p className="text-indigo-600 font-bold text-xs mt-2 bg-indigo-50 px-2 py-1 rounded inline-block">🎁 Return: {match.theirJob.reward}</p>
                       )}
                     </div>
 
                     <button
                       onClick={() => handleAcceptJob(match.theirJob._id)}
-                      className="w-full mt-auto bg-indigo-600 text-white font-medium py-2.5 rounded-xl hover:bg-indigo-700 transition-colors shadow-sm"
+                      className="w-full mt-auto bg-indigo-600 text-white font-bold py-3.5 rounded-full hover:bg-indigo-700 transition-all shadow-sm active:scale-95"
                     >
                       Accept & Connect
                     </button>
                   </div>
                 ))
               ) : (
-                <div className="col-span-full py-16 text-center bg-white border border-gray-100 rounded-3xl">
+                <div className="col-span-full py-20 text-center bg-white border border-slate-100 rounded-[2.5rem] shadow-sm">
                   <div className="text-4xl mb-4">🔍</div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">No matches right now</h3>
-                  <p className="text-gray-500 max-w-sm mx-auto">
+                  <h3 className="text-xl font-extrabold text-slate-900 mb-2">No matches right now</h3>
+                  <p className="text-slate-500 max-w-sm mx-auto font-medium">
                     We couldn't find any direct matches between what you're offering and what your neighbors need (or vice versa).
                   </p>
                 </div>
@@ -621,31 +620,31 @@ export default function DashboardPage() {
 
       {/* Create Job Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/50 backdrop-blur-sm">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Post a Request</h2>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm font-sans">
+          <div className="bg-white rounded-[2rem] max-w-md w-full p-8 shadow-2xl animate-in fade-in zoom-in duration-200">
+            <h2 className="text-3xl font-extrabold text-slate-900 mb-6 tracking-tight">Post a Request</h2>
             <form onSubmit={handleCreateJob} className="space-y-5">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-bold text-slate-700 mb-2 pl-2">
                   Title
                 </label>
                 <input
                   type="text"
                   required
-                  className="w-full border-gray-300 rounded-xl shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-3 bg-gray-50 border"
+                  className="w-full bg-slate-100 border-none rounded-2xl p-4 text-slate-900 font-medium focus:bg-white focus:ring-2 focus:ring-indigo-600 transition-all outline-none"
                   placeholder="e.g. Need help moving a couch"
                   value={newJob.title}
                   onChange={(e) => setNewJob({ ...newJob, title: e.target.value })}
                 />
               </div>
               
-              <div className="flex gap-4">
+              <div className="flex flex-col sm:flex-row gap-4">
                 <div className="flex-1">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-bold text-slate-700 mb-2 pl-2">
                     Range (km)
                   </label>
                   <select
-                    className="w-full border-gray-300 rounded-xl shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-3 bg-gray-50 border"
+                    className="w-full bg-slate-100 border-none rounded-2xl p-4 text-slate-900 font-medium focus:bg-white focus:ring-2 focus:ring-indigo-600 transition-all outline-none cursor-pointer"
                     value={newJob.range}
                     onChange={(e) => setNewJob({ ...newJob, range: Number(e.target.value) })}
                   >
@@ -653,12 +652,12 @@ export default function DashboardPage() {
                   </select>
                 </div>
                 <div className="flex-[2]">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-bold text-slate-700 mb-2 pl-2">
                     What will you give in return?
                   </label>
                   <input
                     type="text"
-                    className="w-full border-gray-300 rounded-xl shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-3 bg-gray-50 border"
+                    className="w-full bg-slate-100 border-none rounded-2xl p-4 text-slate-900 font-medium focus:bg-white focus:ring-2 focus:ring-indigo-600 transition-all outline-none"
                     placeholder="e.g. $10, a cup of coffee..."
                     value={newJob.reward}
                     onChange={(e) => setNewJob({ ...newJob, reward: e.target.value })}
@@ -666,13 +665,13 @@ export default function DashboardPage() {
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-bold text-slate-700 mb-2 pl-2">
                   Description
                 </label>
                 <textarea
                   required
                   rows={4}
-                  className="w-full border-gray-300 rounded-xl shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-3 bg-gray-50 border"
+                  className="w-full bg-slate-100 border-none rounded-2xl p-4 text-slate-900 font-medium focus:bg-white focus:ring-2 focus:ring-indigo-600 transition-all outline-none resize-none"
                   placeholder="Describe what you need help with..."
                   value={newJob.description}
                   onChange={(e) =>
@@ -685,14 +684,14 @@ export default function DashboardPage() {
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="flex-1 bg-gray-100 text-gray-700 font-medium py-3 rounded-xl hover:bg-gray-200 transition-colors"
+                  className="flex-1 bg-slate-100 text-slate-700 font-bold py-3.5 rounded-full hover:bg-slate-200 transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="flex-1 bg-indigo-600 text-white font-medium py-3 rounded-xl hover:bg-indigo-700 transition-colors disabled:opacity-50"
+                  className="flex-1 bg-indigo-600 text-white font-bold py-3.5 rounded-full hover:bg-indigo-700 transition-all active:scale-95 disabled:opacity-50"
                 >
                   {submitting ? "Posting..." : "Post Request"}
                 </button>
@@ -704,16 +703,16 @@ export default function DashboardPage() {
 
       {/* Create News Modal */}
       {isNewsModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/50 backdrop-blur-sm">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Share Neighborhood News</h2>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm font-sans">
+          <div className="bg-white rounded-[2rem] max-w-md w-full p-8 shadow-2xl animate-in fade-in zoom-in duration-200">
+            <h2 className="text-3xl font-extrabold text-slate-900 mb-6 tracking-tight">Share News</h2>
             <form onSubmit={handleCreateNews} className="space-y-5">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-bold text-slate-700 mb-2 pl-2">
                   Type
                 </label>
                 <select
-                  className="w-full border-gray-300 rounded-xl shadow-sm focus:border-emerald-500 focus:ring-emerald-500 p-3 bg-gray-50 border"
+                  className="w-full bg-slate-100 border-none rounded-2xl p-4 text-slate-900 font-medium focus:bg-white focus:ring-2 focus:ring-emerald-600 transition-all outline-none cursor-pointer"
                   value={newNews.type}
                   onChange={(e) => setNewNews({ ...newNews, type: e.target.value })}
                 >
@@ -723,13 +722,13 @@ export default function DashboardPage() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-bold text-slate-700 mb-2 pl-2">
                   What's happening?
                 </label>
                 <textarea
                   required
                   rows={4}
-                  className="w-full border-gray-300 rounded-xl shadow-sm focus:border-emerald-500 focus:ring-emerald-500 p-3 bg-gray-50 border"
+                  className="w-full bg-slate-100 border-none rounded-2xl p-4 text-slate-900 font-medium focus:bg-white focus:ring-2 focus:ring-emerald-600 transition-all outline-none resize-none"
                   placeholder="Share updates, events, or alerts..."
                   value={newNews.content}
                   onChange={(e) =>
@@ -738,14 +737,14 @@ export default function DashboardPage() {
                 ></textarea>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-bold text-slate-700 mb-2 pl-2">
                   Upload Image (Optional)
                 </label>
                 <input
                   type="file"
                   accept="image/*"
                   onChange={handleImageUpload}
-                  className="w-full text-sm text-gray-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 transition-colors"
+                  className="w-full text-sm text-slate-500 file:mr-4 file:py-3 file:px-5 file:rounded-full file:border-0 file:text-sm file:font-bold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 transition-colors cursor-pointer"
                 />
               </div>
               
@@ -753,14 +752,14 @@ export default function DashboardPage() {
                 <button
                   type="button"
                   onClick={() => setIsNewsModalOpen(false)}
-                  className="flex-1 bg-gray-100 text-gray-700 font-medium py-3 rounded-xl hover:bg-gray-200 transition-colors"
+                  className="flex-1 bg-slate-100 text-slate-700 font-bold py-3.5 rounded-full hover:bg-slate-200 transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="flex-1 bg-emerald-600 text-white font-medium py-3 rounded-xl hover:bg-emerald-700 transition-colors disabled:opacity-50"
+                  className="flex-1 bg-emerald-600 text-white font-bold py-3.5 rounded-full hover:bg-emerald-700 transition-all active:scale-95 disabled:opacity-50"
                 >
                   {submitting ? "Posting..." : "Share Post"}
                 </button>
