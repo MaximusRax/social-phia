@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -13,6 +13,7 @@ export default function DashboardPage() {
   const [jobs, setJobs] = useState([]);
   const [myJobs, setMyJobs] = useState([]);
   const [news, setNews] = useState([]);
+  const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isNewsModalOpen, setIsNewsModalOpen] = useState(false);
@@ -41,8 +42,7 @@ export default function DashboardPage() {
       } else if (activeTab === "news") {
         fetchNews();
       } else if (activeTab === "suggestions") {
-        fetchBoardJobs();
-        fetchMyJobs();
+        fetchSuggestions();
       }
     }
   }, [activeTab, status, location, radius]);
@@ -73,37 +73,6 @@ export default function DashboardPage() {
       setLocation({ lat: parseFloat(locationInput.lat), lng: parseFloat(locationInput.lng) });
     }
   };
-
-  // Compute matching suggestions based on needs vs rewards
-  const suggestedMatches = useMemo(() => {
-    const matches = [];
-    const myOpen = myJobs.filter(j => j.status === "open");
-    const boardOpen = jobs.filter(j => j.status === "open");
-
-    myOpen.forEach(mJob => {
-      boardOpen.forEach(bJob => {
-        const myReward = mJob.reward?.toLowerCase().trim();
-        const theirNeed = `${bJob.title} ${bJob.description}`.toLowerCase();
-        const theirReward = bJob.reward?.toLowerCase().trim();
-        const myNeed = `${mJob.title} ${mJob.description}`.toLowerCase();
-
-        const iCanHelpThem = myReward && myReward.length > 2 && theirNeed.includes(myReward);
-        const theyCanHelpMe = theirReward && theirReward.length > 2 && myNeed.includes(theirReward);
-
-        if (iCanHelpThem || theyCanHelpMe) {
-          matches.push({
-            id: `${mJob._id}-${bJob._id}`,
-            myJob: mJob,
-            theirJob: bJob,
-            reason: iCanHelpThem 
-              ? `Your return "${mJob.reward}" matches what they need!` 
-              : `Their return "${bJob.reward}" matches what you need!`
-          });
-        }
-      });
-    });
-    return matches;
-  }, [myJobs, jobs]);
 
   const fetchBoardJobs = async () => {
     // Prevent calling the nearby endpoint if we don't have coordinates yet
@@ -150,6 +119,30 @@ export default function DashboardPage() {
     }
   };
 
+  const fetchSuggestions = async () => {
+    if (!location) {
+      setLoading(false);
+      return;
+    }
+    setLoading(true);
+    try {
+      const queryParams = new URLSearchParams();
+      queryParams.append("lat", location.lat);
+      queryParams.append("lng", location.lng);
+      queryParams.append("radius", radius);
+
+      const res = await fetch(`/api/jobs/suggestions?${queryParams.toString()}`);
+      if (res.ok) {
+        const data = await res.json();
+        setSuggestions(data.matches || []);
+      }
+    } catch (error) {
+      console.error("Error fetching suggestions:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const fetchNews = async () => {
     setLoading(true);
     try {
@@ -178,7 +171,7 @@ export default function DashboardPage() {
     try {
       const payload = { ...newJob };
       if (location) {
-        payload.location = { type: "Point", coordinates: [location.lng, location.lat] };
+        payload.coordinates = [location.lng, location.lat];
       }
 
       const res = await fetch("/api/jobs/create", {
@@ -582,8 +575,8 @@ export default function DashboardPage() {
                 </div>
               )
             ) : activeTab === "suggestions" ? (
-              suggestedMatches.length > 0 ? (
-                suggestedMatches.map((match) => (
+              suggestions.length > 0 ? (
+                suggestions.map((match) => (
                   <div key={match.id} className="bg-gradient-to-br from-indigo-50 to-purple-50 p-6 rounded-2xl border border-indigo-100 shadow-sm flex flex-col">
                     <span className="inline-block px-3 py-1 bg-indigo-100 text-indigo-800 text-xs font-bold uppercase tracking-wider rounded-lg mb-3 w-max">
                       Match Found ✨

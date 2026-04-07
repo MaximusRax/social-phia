@@ -40,7 +40,7 @@ export default function RegisterPage() {
 
     try {
       // 1. Register the new user
-      const res = await fetch("/api/register", {
+      const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -51,8 +51,14 @@ export default function RegisterPage() {
       });
 
       if (!res.ok) {
-        const data = await res.json();
-        setError(data.message || "Failed to create account.");
+        let errorMessage = "Failed to create account.";
+        try {
+          const data = await res.json();
+          errorMessage = data.message || errorMessage;
+        } catch (parseError) {
+          console.error("Non-JSON error response from server");
+        }
+        setError(errorMessage);
         setLoading(false);
         return;
       }
@@ -119,7 +125,7 @@ export default function RegisterPage() {
           {/* Default Location Setup */}
           <div>
             <h3 className="text-sm font-bold text-gray-900 mb-1">Set Default Location</h3>
-            <p className="text-xs text-gray-500 mb-4">We'll use this to show nearby requests.</p>
+            <p className="text-xs text-gray-500 mb-4">We&apos;ll use this to show nearby requests.</p>
             
             <button onClick={handleAutoDetect} className="w-full bg-indigo-50 text-indigo-700 font-bold py-2.5 rounded-xl mb-4 hover:bg-indigo-100 transition-colors text-sm shadow-sm">
               Auto Detect Current Location 📍

@@ -6,77 +6,20 @@ import Job from "@/lib/models/Job";
 
 export const dynamic = "force-dynamic";
 
-// Smart matching heuristic (Lightweight local NLP context matcher)
-const smartMatch = (rewardText, needText) => {
-  if (!rewardText || !needText) return false;
-
-  // Common words we want the matching engine to ignore (Stop Words)
-  const stopWords = new Set([
-    "a",
-    "an",
-    "the",
-    "and",
-    "or",
-    "but",
-    "is",
-    "are",
-    "am",
-    "will",
-    "can",
-    "to",
-    "for",
-    "with",
-    "in",
-    "on",
-    "at",
-    "by",
-    "some",
-    "any",
-    "i",
-    "you",
-    "we",
-    "they",
-    "he",
-    "she",
-    "it",
-    "my",
-    "your",
-    "give",
-    "need",
-    "want",
-    "return",
-    "help",
-    "offer",
-    "provide",
-    "this",
-    "that",
-    "looking",
-    "someone",
-    "please",
-    "anyone",
-    "has",
-    "have",
-    "do",
-    "does",
-    "like",
-    "just"
-  ]);
-
-  // Strip punctuation, split into lowercase words, ignore stop words and very short words
-  const getWords = (str) =>
-    str
-      .toLowerCase()
-      .replace(/[^\w\s]/gi, "")
-      .split(/\s+/)
-      .filter((w) => w.length > 1 && !stopWords.has(w));
-
-  const rewardWords = getWords(rewardText);
-  const needWords = getWords(needText);
-
-  // Find if at least one meaningful keyword overlaps between the reward and the need
-  return (
-    rewardWords.length > 0 && rewardWords.some((rw) => needWords.includes(rw))
-  );
+// Mathematical function to compare two AI vector embeddings
+const cosineSimilarity = (vecA, vecB) => {
+  // Ensure vectors exist, are not empty, and are the same size
+  if (!vecA || !vecB || vecA.length === 0 || vecB.length === 0 || vecA.length !== vecB.length) return 0;
+  
+  let dotProduct = 0;
+  let normA = 0;
+  let normB = 0;
+  for (let i = 0; i < vecA.length; i++) {
+    dotProduct += vecA[i] * vecB[i];
+    normA += vecA[i] * vecA[i];
+    normB += vecB[i] * vecB[i];
+  }
+  return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
 };
 
 export async function GET(req) {
@@ -117,36 +60,48 @@ export async function GET(req) {
       .populate("postedBy", "name")
       .lean();
 
+    // --- DEBUGGING LOGS ---
+    console.log(`\n[Suggestions] Found ${myJobs.length} active jobs for you.`);
+    console.log(`[Suggestions] Found ${nearbyJobs.length} nearby jobs from neighbors.`);
+
     const matches = [];
 
     myJobs.forEach((mJob) => {
+      // Skip jobs that don't have an AI embedding saved
+      if (!mJob.embedding || mJob.embedding.length === 0) {
+        console.log(`[Suggestions] ⚠️ Skipping your job "${mJob.title}" - No AI embedding found.`);
+        return;
+      }
+
       nearbyJobs.forEach((bJob) => {
-        const myReward = mJob.reward || "";
-        const theirReward = bJob.reward || "";
-        const myNeed = `${mJob.title || ""} ${mJob.description || ""}`;
-        const theirNeed = `${bJob.title || ""} ${bJob.description || ""}`;
+        // Skip neighbor jobs that don't have an AI embedding saved
+        if (!bJob.embedding || bJob.embedding.length === 0) {
+          console.log(`[Suggestions] ⚠️ Skipping neighbor job "${bJob.title}" - No AI embedding found.`);
+          return;
+        }
 
-        const iCanHelpThem = myReward && smartMatch(myReward, theirNeed);
-        const theyCanHelpMe = theirReward && smartMatch(theirReward, myNeed);
+        // Calculate similarity. 1.0 is exact match, 0 is entirely unrelated.
+        const similarity = cosineSimilarity(mJob.embedding, bJob.embedding);
         
-        // Fallback: If both users have similar needs/titles, suggest they collaborate
-        const sharedNeed = smartMatch(myNeed, theirNeed);
+        console.log(`[Suggestions] Similarity between "${mJob.title}" and "${bJob.title}" = ${similarity.toFixed(3)}`);
 
-        if (iCanHelpThem || theyCanHelpMe || sharedNeed) {
-          let reasonText = "";
-          if (iCanHelpThem) reasonText = `Your return "${myReward}" matches what they need!`;
-          else if (theyCanHelpMe) reasonText = `Their return "${theirReward}" matches what you need!`;
-          else reasonText = `You both are looking for similar things! Maybe you can team up?`;
+        // Threshold for a match (0.5 to 0.7 usually yields great semantic matches)
+        if (similarity > 0.55) {
+          const matchPercentage = Math.round(similarity * 100);
 
           matches.push({
             id: `${mJob._id}-${bJob._id}`,
             myJob: mJob,
             theirJob: bJob,
-            reason: reasonText,
+            reason: `High compatibility! We found a ${matchPercentage}% semantic match based on your needs and offers.`,
+            score: similarity // Optional: used for sorting
           });
         }
       });
     });
+
+    // Sort highest matches to the top
+    matches.sort((a, b) => b.score - a.score);
 
     return NextResponse.json({ matches }, { status: 200 });
   } catch (error) {
