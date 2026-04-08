@@ -9,7 +9,6 @@ export default function PostJobPage() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  // Manual Location State
   const [isManual, setIsManual] = useState(false);
   const [manualCoords, setManualCoords] = useState({ lng: "", lat: "" });
 
@@ -17,7 +16,6 @@ export default function PostJobPage() {
     e.preventDefault();
     setLoading(true);
 
-    // Case A: User chose Manual Input
     if (isManual) {
       if (!manualCoords.lng || !manualCoords.lat) {
         setMessage("Please enter valid coordinates or use GPS.");
@@ -27,7 +25,6 @@ export default function PostJobPage() {
       return await submitJob([parseFloat(manualCoords.lng), parseFloat(manualCoords.lat)]);
     }
 
-    // Case B: Automatic GPS
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
@@ -35,7 +32,7 @@ export default function PostJobPage() {
         },
         async () => {
           setMessage("GPS failed. Please enter location manually below.");
-          setIsManual(true); // Switch to manual mode automatically on failure
+          setIsManual(true);
           setLoading(false);
         },
         { timeout: 5000 }
@@ -101,7 +98,6 @@ export default function PostJobPage() {
             </select>
           </div>
 
-          {/* --- Location Section --- */}
           <div className="p-6 bg-[#A8DADC]/20 rounded-3xl">
             <div className="flex items-center justify-between mb-4">
               <span className="text-sm font-bold text-[#1D3557] pl-1">Location Settings</span>

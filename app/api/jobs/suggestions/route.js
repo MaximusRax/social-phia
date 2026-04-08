@@ -6,9 +6,7 @@ import Job from "@/lib/models/Job";
 
 export const dynamic = "force-dynamic";
 
-// Mathematical function to compare two AI vector embeddings
 const cosineSimilarity = (vecA, vecB) => {
-  // Ensure vectors exist, are not empty, and are the same size
   if (!vecA || !vecB || vecA.length === 0 || vecB.length === 0 || vecA.length !== vecB.length) return 0;
   
   let dotProduct = 0;
@@ -40,13 +38,11 @@ export async function GET(req) {
   }
 
   try {
-    // Fetch user's active jobs
     const myJobs = await Job.find({
       postedBy: session.user.id,
       status: "open",
     }).lean();
 
-    // Fetch nearby open jobs (excluding user's own)
     const nearbyJobs = await Job.find({
       location: {
         $near: {
@@ -60,32 +56,27 @@ export async function GET(req) {
       .populate("postedBy", "name")
       .lean();
 
-    // --- DEBUGGING LOGS ---
     console.log(`\n[Suggestions] Found ${myJobs.length} active jobs for you.`);
     console.log(`[Suggestions] Found ${nearbyJobs.length} nearby jobs from neighbors.`);
 
     const matches = [];
 
     myJobs.forEach((mJob) => {
-      // Skip jobs that don't have an AI embedding saved
       if (!mJob.embedding || mJob.embedding.length === 0) {
         console.log(`[Suggestions] ⚠️ Skipping your job "${mJob.title}" - No AI embedding found.`);
         return;
       }
 
       nearbyJobs.forEach((bJob) => {
-        // Skip neighbor jobs that don't have an AI embedding saved
         if (!bJob.embedding || bJob.embedding.length === 0) {
           console.log(`[Suggestions] ⚠️ Skipping neighbor job "${bJob.title}" - No AI embedding found.`);
           return;
         }
 
-        // Calculate similarity. 1.0 is exact match, 0 is entirely unrelated.
         const similarity = cosineSimilarity(mJob.embedding, bJob.embedding);
         
         console.log(`[Suggestions] Similarity between "${mJob.title}" and "${bJob.title}" = ${similarity.toFixed(3)}`);
 
-        // Threshold for a match (lowered to 0.45 for Hugging Face MiniLM model)
         if (similarity > 0.45) {
           const matchPercentage = Math.round(similarity * 100);
 
@@ -94,13 +85,12 @@ export async function GET(req) {
             myJob: mJob,
             theirJob: bJob,
             reason: `High compatibility! We found a ${matchPercentage}% semantic match based on your needs and offers.`,
-            score: similarity // Optional: used for sorting
+            score: similarity
           });
         }
       });
     });
 
-    // Sort highest matches to the top
     matches.sort((a, b) => b.score - a.score);
 
     return NextResponse.json({ matches }, { status: 200 });

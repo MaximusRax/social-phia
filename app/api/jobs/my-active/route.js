@@ -12,7 +12,6 @@ export async function GET() {
 
     await dbConnect();
 
-    // Find jobs where the user is EITHER the poster OR the person who accepted it
     const myJobs = await Job.find({
       $or: [{ postedBy: session.user.id }, { acceptedBy: session.user.id }],
     })

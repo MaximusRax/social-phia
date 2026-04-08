@@ -3,9 +3,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import dbConnect from "@/lib/mongodb";
 import Post from "@/lib/models/Post";
-import User from "@/lib/models/User"; // Required for population
-
-// Force Next.js to always treat this as a live API route instead of caching a 404!
+import User from "@/lib/models/User"; 
 export const dynamic = "force-dynamic";
 
 export async function POST(req) {
@@ -17,7 +15,6 @@ export async function POST(req) {
 
     await dbConnect();
 
-    // Find the database ID using the session email to ensure Mongoose accepts the insert
     let authorId = session.user.id;
     if (!authorId && session.user.email) {
       const dbUser = await User.findOne({ email: session.user.email }).select("_id");

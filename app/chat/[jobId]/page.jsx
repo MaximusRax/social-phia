@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
-import { authOptions } from "@/lib/auth"; // Ensure you use the new lib/auth path
+import { authOptions } from "@/lib/auth"; 
 import dbConnect from "@/lib/mongodb";
 import Message from "@/lib/models/Message";
 import Job from "@/lib/models/Job";
@@ -11,14 +11,12 @@ export default async function ChatPage({ params }) {
   const session = await getServerSession(authOptions);
   if (!session) redirect("/login");
 
-  // FIX: You must await params before destructuring in Next.js 15
   const resolvedParams = await params;
   const { jobId } = resolvedParams;
 
   await dbConnect();
 
   try {
-    // 1. Verify the job exists and populate participants
     const job = await Job.findById(jobId)
       .populate('postedBy', 'name')
       .populate('acceptedBy', 'name');
@@ -33,7 +31,6 @@ export default async function ChatPage({ params }) {
       );
     }
 
-    // Safely extract the IDs 
     const posterId = job.postedBy?._id?.toString() || job.postedBy?.toString();
     const accepterId = job.acceptedBy?._id?.toString() || job.acceptedBy?.toString();
     const currentUserId = session.user.id?.toString();
@@ -41,7 +38,6 @@ export default async function ChatPage({ params }) {
     const isPoster = posterId === currentUserId;
     const isAccepter = accepterId === currentUserId;
 
-    // SCENARIO 1: The user has nothing to do with this job
     if (!isPoster && !isAccepter) {
       return (
         <div className="min-h-screen flex flex-col items-center justify-center p-10 text-center bg-[#F1FAEE] font-sans">
@@ -52,7 +48,6 @@ export default async function ChatPage({ params }) {
       );
     }
 
-    // SCENARIO 2: The creator is looking at the chat, but nobody has accepted it yet
     if (isPoster && job.status === 'open') {
       return (
         <div className="min-h-screen bg-[#F1FAEE] py-20 px-4 flex flex-col items-center justify-center font-sans">
@@ -72,13 +67,11 @@ export default async function ChatPage({ params }) {
       );
     }
 
-    // 2. Fetch initial messages
     const initialMessages = await Message.find({ jobId })
       .populate("sender", "name")
       .sort({ createdAt: 1 })
       .lean();
 
-    // Serialize data for the Client Component
     const serializedMessages = initialMessages.map(msg => ({
       ...msg,
       _id: msg._id.toString(),

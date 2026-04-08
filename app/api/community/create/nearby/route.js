@@ -3,9 +3,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import dbConnect from "@/lib/mongodb";
 import Post from "@/lib/models/Post";
-import User from "@/lib/models/User"; // Required for population
-
-// Force Next.js to always treat this as a live API route instead of caching a 404!
+import User from "@/lib/models/User"; 
 export const dynamic = "force-dynamic";
 
 export async function GET(req) {
@@ -29,7 +27,6 @@ export async function GET(req) {
 
     await dbConnect();
 
-    // Find posts within the specified radius
     const posts = await Post.find({
       location: {
         $near: {

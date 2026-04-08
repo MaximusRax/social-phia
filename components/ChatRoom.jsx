@@ -11,26 +11,21 @@ export default function ChatRoom({ jobId, initialMessages = [] }) {
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
-    // Scroll to the bottom whenever a new message arrives
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   useEffect(() => {
-    // Initialize Pusher Client-side
     const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
       cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
     });
 
-    // Subscribe to the specific job's chat channel
     const channelName = `chat-${jobId}`;
     const channel = pusher.subscribe(channelName);
 
-    // Listen for the 'new-message' event we defined in our API route
     channel.bind("new-message", (newMsg) => {
       setMessages((prev) => [...prev, newMsg]);
     });
 
-    // Cleanup when the user leaves the page
     return () => {
       pusher.unsubscribe(channelName);
     };
@@ -41,7 +36,7 @@ export default function ChatRoom({ jobId, initialMessages = [] }) {
     if (!inputText.trim()) return;
 
     const textToSend = inputText;
-    setInputText(""); // Clear input immediately for better UX
+    setInputText(""); 
 
     await fetch("/api/messages", {
       method: "POST",
@@ -51,12 +46,11 @@ export default function ChatRoom({ jobId, initialMessages = [] }) {
   };
 
   return (
-    <div className="flex flex-col h-[500px] w-full max-w-md mx-auto bg-[#F1FAEE] border border-[#A8DADC]/50 rounded-xl shadow-sm overflow-hidden">
+    <div className="flex flex-col h-125 w-full max-w-md mx-auto bg-[#F1FAEE] border border-[#A8DADC]/50 rounded-xl shadow-sm overflow-hidden">
       <div className="bg-[#457B9D] p-4 text-white font-semibold">
         Job Coordination Chat
       </div>
 
-      {/* Messages Area */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-[#F4F1DE]">
         {messages.map((msg, idx) => {
           const isMe = msg.sender._id === session?.user?.id;
@@ -72,7 +66,6 @@ export default function ChatRoom({ jobId, initialMessages = [] }) {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input Area */}
       <form onSubmit={sendMessage} className="p-3 bg-[#F1FAEE] border-t border-[#A8DADC]/50 flex gap-2">
         <input
           type="text"

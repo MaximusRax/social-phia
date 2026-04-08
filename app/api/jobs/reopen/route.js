@@ -21,12 +21,11 @@ export async function PATCH(req) {
 
     await dbConnect();
 
-    // Find and update the job ONLY if the logged-in user is the one who posted it
     const updatedJob = await Job.findOneAndUpdate(
       { _id: jobId, postedBy: session.user.id },
       {
-        $set: { status: "open" }, // Put it back on the neighborhood board
-        $unset: { acceptedBy: "" }, // Completely remove the person who accepted it
+        $set: { status: "open" }, 
+        $unset: { acceptedBy: "" }, 
       },
       { new: true },
     );

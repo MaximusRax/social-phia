@@ -1,12 +1,11 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/lib/auth"; // <-- 1. Import authOptions
+import { authOptions } from "@/lib/auth"; 
 import dbConnect from "@/lib/mongodb";
 import Job from "@/lib/models/Job";
 
 export async function PATCH(req) {
   try {
-    // 2. Pass authOptions into the session so it grabs your User ID
     const session = await getServerSession(authOptions);
 
     if (!session || !session.user?.id) {
@@ -24,13 +23,12 @@ export async function PATCH(req) {
 
     await dbConnect();
 
-    // 3. Update the job with your actual ID
     const updatedJob = await Job.findOneAndUpdate(
       { _id: jobId, status: "open", postedBy: { $ne: session.user.id } },
       {
         $set: {
           status: "in-progress",
-          acceptedBy: session.user.id, // This will no longer be undefined!
+          acceptedBy: session.user.id,
         },
       },
       { new: true },

@@ -3,7 +3,6 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import dbConnect from "@/lib/mongodb";
 import Job from "@/lib/models/Job";
-// Assume dbConnect() is a utility function you create to connect to MongoDB
 export const dynamic = "force-dynamic";
 
 export async function GET(req) {
@@ -18,7 +17,7 @@ export async function GET(req) {
   const lng = parseFloat(searchParams.get("lng"));
   const lat = parseFloat(searchParams.get("lat"));
   const radiusKm = parseFloat(searchParams.get("radius"));
-  const maxDistance = (isNaN(radiusKm) ? 5 : radiusKm) * 1000; // convert km to meters
+  const maxDistance = (isNaN(radiusKm) ? 5 : radiusKm) * 1000; 
 
   try {
     const nearbyJobs = await Job.find({
@@ -28,11 +27,11 @@ export async function GET(req) {
             type: "Point",
             coordinates: [lng, lat],
           },
-          $maxDistance: maxDistance, // in meters
+          $maxDistance: maxDistance,
         },
       },
       status: "open",
-      postedBy: { $ne: session.user.id }, // Exclude own jobs
+      postedBy: { $ne: session.user.id }, 
     }).populate("postedBy", "name");
 
     return NextResponse.json({ jobs: nearbyJobs }, { status: 200 });

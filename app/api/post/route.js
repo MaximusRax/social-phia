@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import dbConnect from "@/lib/mongodb";
-import Post from "@/lib/models/Post"; // Assumes you have a Post mongoose model
+import Post from "@/lib/models/Post";
 
 export async function POST(req) {
   try {
@@ -16,11 +16,10 @@ export async function POST(req) {
 
     await dbConnect();
 
-    // Create the neighborhood post with the user's ID and location
     const newPost = await Post.create({
       content,
       type: type || "news",
-      image: image || "", // This will natively store the Base64 image
+      image: image || "",
       location,
       author: session.user.id,
     });
@@ -49,9 +48,7 @@ export async function GET(req) {
 
     let query = {};
 
-    // Use MongoDB 2dsphere $centerSphere to filter by radius
     if (lat && lng && radius) {
-      // Convert radius in km to radians (Earth's radius is ~6378.1 km)
       const radiusInRadians = Number(radius) / 6378.1;
       query.location = {
         $geoWithin: {

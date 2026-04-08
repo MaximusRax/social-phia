@@ -4,11 +4,9 @@ import Link from "next/link";
 export default function HowItWorksPage() {
   return (
     <div className="min-h-screen bg-[#F1FAEE] flex flex-col font-sans text-[#1D3557]">
-      {/* Navigation */}
       <header className="w-full bg-white/80 backdrop-blur-xl border-b border-[#A8DADC]/50 sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            {/* <img src="/icon.png" alt="Social-Phia Logo" className="w-10 h-10 object-contain" /> */}
             <Image
               src="/icon.png"
               alt="Social-Phia Logo"
@@ -38,7 +36,6 @@ export default function HowItWorksPage() {
         </div>
       </header>
 
-      {/* Hero Section */}
       <main className="flex-1">
         <section className="py-24 px-4 sm:px-6 lg:px-8 bg-white rounded-b-[3rem] shadow-sm relative z-10 text-center">
           <h1 className="text-4xl md:text-5xl font-extrabold text-[#1D3557] tracking-tight mb-6">
@@ -51,11 +48,9 @@ export default function HowItWorksPage() {
           </p>
         </section>
 
-        {/* The Steps (Timeline Layout) */}
         <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto relative z-0">
           <div className="space-y-16">
 
-            {/* Step 1 */}
             <div className="flex flex-col md:flex-row gap-8 items-center">
               <div className="md:w-1/2 flex justify-center md:justify-end">
                 <div className="w-48 h-48 bg-[#A8DADC]/30 rounded-full flex items-center justify-center border-8 border-white shadow-xl shadow-[#A8DADC]/40">
@@ -71,7 +66,6 @@ export default function HowItWorksPage() {
               </div>
             </div>
 
-            {/* Step 2 */}
             <div className="flex flex-col md:flex-row-reverse gap-8 items-center">
               <div className="md:w-1/2 flex justify-center md:justify-start">
                 <div className="w-48 h-48 bg-[#81B29A]/20 rounded-full flex items-center justify-center border-8 border-white shadow-xl shadow-[#81B29A]/30">
@@ -87,7 +81,6 @@ export default function HowItWorksPage() {
               </div>
             </div>
 
-            {/* Step 3 */}
             <div className="flex flex-col md:flex-row gap-8 items-center">
               <div className="md:w-1/2 flex justify-center md:justify-end">
                 <div className="w-48 h-48 bg-[#E07A5F]/20 rounded-full flex items-center justify-center border-8 border-white shadow-xl shadow-[#E07A5F]/30">
@@ -106,7 +99,6 @@ export default function HowItWorksPage() {
           </div>
         </section>
 
-        {/* Trust & Safety Section */}
         <section className="bg-[#1D3557] rounded-[3rem] shadow-xl shadow-[#3D405B]/10 mx-4 sm:mx-6 lg:mx-8 mb-12 py-16 px-4 sm:px-6 lg:px-8 text-center">
           <div className="max-w-3xl mx-auto">
             <h2 className="text-3xl font-bold text-white mb-6">Built on Trust</h2>
@@ -123,7 +115,6 @@ export default function HowItWorksPage() {
         </section>
       </main>
 
-      {/* Footer */}
       <footer className="bg-[#1D3557] py-12 text-center rounded-t-[3rem]">
         <p className="text-[#F1FAEE]/70 font-medium">
           © {new Date().getFullYear()} Social-Phia. Built for the community.

@@ -13,7 +13,6 @@ export async function GET(req) {
 
     await dbConnect();
     
-    // Fetch user without exposing the password hash
     const user = await User.findById(session.user.id).select("-password");
     if (!user) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });

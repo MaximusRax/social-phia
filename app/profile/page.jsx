@@ -76,12 +76,10 @@ export default function ProfilePage() {
   return (
     <div className="min-h-screen bg-[#F1FAEE] py-10 px-4 font-sans text-[#1D3557]">
       <div className="max-w-3xl mx-auto">
-        {/* Back Link */}
         <Link href="/dashboard" className="inline-flex items-center gap-2 px-5 py-2.5 bg-white rounded-full text-[#3D405B] hover:text-[#457B9D] hover:bg-[#A8DADC]/30 transition-colors font-bold shadow-sm mb-6 border border-[#A8DADC]/50 w-max">
           <span className="text-xl leading-none pb-0.5">&larr;</span> Back to Dashboard
         </Link>
 
-        {/* Profile Card */}
         <div className="bg-white rounded-[2rem] shadow-xl shadow-[#3D405B]/10 overflow-hidden border border-[#A8DADC]/30">
           <div className="bg-[#457B9D] px-8 py-10 text-center relative">
             <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#457B9D] to-[#1D3557] opacity-80 mix-blend-multiply"></div>

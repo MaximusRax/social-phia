@@ -6,7 +6,6 @@ import Message from "@/lib/models/Message";
 import Job from "@/lib/models/Job";
 import Pusher from "pusher";
 
-// Initialize Pusher Server-side
 const pusher = new Pusher({
   appId: process.env.PUSHER_APP_ID,
   key: process.env.PUSHER_KEY,
@@ -29,7 +28,6 @@ export async function POST(req) {
 
     await dbConnect();
 
-    // Check if user is authorized to send messages to this job
     const job = await Job.findById(jobId);
     if (!job) {
       return NextResponse.json({ message: "Job not found" }, { status: 404 });
@@ -42,18 +40,14 @@ export async function POST(req) {
       return NextResponse.json({ message: "Unauthorized to send messages to this job" }, { status: 403 });
     }
 
-    // 1. Save to Database
     const newMessage = await Message.create({
       jobId,
       sender: session.user.id,
       text,
     });
 
-    // We need the sender's name to display in the UI
     await newMessage.populate("sender", "name");
 
-    // 2. Broadcast via Pusher
-    // We use the Job ID as a unique channel so only the right people hear it
     const channelName = `chat-${jobId}`;
     await pusher.trigger(channelName, "new-message", {
       _id: newMessage._id,

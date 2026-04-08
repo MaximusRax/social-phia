@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import dbConnect from "@/lib/mongodb";
-import User from "@/lib/models/User"; // Ensure this model exists
+import User from "@/lib/models/User";
 
 export async function GET(req) {
   try {

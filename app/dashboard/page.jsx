@@ -22,18 +22,16 @@ export default function DashboardPage() {
   const [newNews, setNewNews] = useState({ content: "", type: "news", image: "" });
   const [submitting, setSubmitting] = useState(false);
   
-  const [location, setLocation] = useState(null); // {lat, lng}
-  const [radius, setRadius] = useState(5); // Default 5 km
+  const [location, setLocation] = useState(null); 
+  const [radius, setRadius] = useState(5); 
   const [locationInput, setLocationInput] = useState({ lat: "", lng: "" });
 
-  // Protect route
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/login");
     }
   }, [status, router]);
 
-  // Fetch data depending on active tab
   useEffect(() => {
     if (status === "authenticated") {
       if (activeTab === "board") {
@@ -61,12 +59,10 @@ export default function DashboardPage() {
     }
   };
 
-  // Auto-detect location on initial load
   useEffect(() => {
     if (status === "authenticated" && !location) {
       handleAutoLocation();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status]);
 
   const handleManualLocation = () => {
@@ -76,7 +72,6 @@ export default function DashboardPage() {
   };
 
   const fetchBoardJobs = async () => {
-    // Prevent calling the nearby endpoint if we don't have coordinates yet
     if (!location) {
       setLoading(false);
       return;
@@ -252,7 +247,6 @@ export default function DashboardPage() {
       });
 
       if (res.ok) {
-        // Redirect straight to the chat room after accepting
         router.push(`/chat/${jobId}`);
       } else {
         const err = await res.json();
@@ -272,7 +266,7 @@ export default function DashboardPage() {
       });
 
       if (res.ok) {
-        fetchMyJobs(); // Refresh the list
+        fetchMyJobs(); 
       } else {
         const err = await res.json();
         alert(`Failed to reopen: ${err.message}`);
@@ -292,11 +286,9 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-[#F1FAEE] font-sans text-[#1D3557] pb-12">
-      {/* Header */}
       <header className="bg-white/90 backdrop-blur-xl sticky top-0 z-40 shadow-sm border-b border-[#A8DADC]/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            {/* <img src="/icon.png" alt="Social-Phia Logo" className="w-10 h-10 object-contain" /> */}
             <Image
               src="/icon.png"
               alt="Social-Phia Logo"
@@ -342,7 +334,6 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Location & Filtering Panel */}
         <div className="bg-white p-6 rounded-[2rem] shadow-sm mb-8 flex flex-wrap items-end gap-5 border border-[#A8DADC]/50">
           <div>
             <label className="block text-xs font-extrabold text-[#3D405B]/70 uppercase tracking-wider mb-2 pl-1">Location Setup</label>
@@ -376,7 +367,6 @@ export default function DashboardPage() {
           )}
         </div>
 
-        {/* Tabs */}
         <div className="flex space-x-2 bg-[#A8DADC]/30 p-1.5 rounded-full mb-10 max-w-4xl overflow-x-auto hide-scrollbar">
           <button
             onClick={() => setActiveTab("board")}
@@ -420,7 +410,6 @@ export default function DashboardPage() {
           </button>
         </div>
 
-        {/* Content Area */}
         {loading ? (
           <div className="py-20 flex justify-center">
             <div className="animate-spin w-12 h-12 border-4 border-[#A8DADC] border-t-[#457B9D] rounded-full"></div>
@@ -460,7 +449,7 @@ export default function DashboardPage() {
               ) : (
                 <div className="col-span-full py-20 text-center bg-white border border-[#A8DADC]/50 rounded-[2.5rem] shadow-sm">
                   <div className="text-4xl mb-4">🏘️</div>
-                  <h3 className="text-xl font-extrabold text-[#1D3557] mb-2">It's quiet around here</h3>
+                  <h3 className="text-xl font-extrabold text-[#1D3557] mb-2">It&apos;s quiet around here</h3>
                   <p className="text-[#3D405B]/70 max-w-sm mx-auto font-medium">
                     There are no open requests in your neighborhood right now. Be the first to post a request!
                   </p>
@@ -550,7 +539,7 @@ export default function DashboardPage() {
                   <div className="text-4xl mb-4">📋</div>
                   <h3 className="text-xl font-extrabold text-[#1D3557] mb-2">No active tasks</h3>
                   <p className="text-[#3D405B]/70 max-w-sm mx-auto font-medium">
-                    You haven't posted any requests or accepted any jobs recently.
+                    You haven&apos;t posted any requests or accepted any jobs recently.
                   </p>
                 </div>
               )
@@ -617,7 +606,7 @@ export default function DashboardPage() {
                   <div className="text-4xl mb-4">🔍</div>
                   <h3 className="text-xl font-extrabold text-[#1D3557] mb-2">No matches right now</h3>
                   <p className="text-[#3D405B]/70 max-w-sm mx-auto font-medium">
-                    We couldn't find any direct matches between what you're offering and what your neighbors need (or vice versa).
+                    We couldn&apos;t find any direct matches between what you&apos;re offering and what your neighbors need (or vice versa).
                   </p>
                 </div>
               )
@@ -627,7 +616,6 @@ export default function DashboardPage() {
         )}
       </main>
 
-      {/* Create Job Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#1D3557]/40 backdrop-blur-sm font-sans">
           <div className="bg-white rounded-[2rem] max-w-md w-full p-8 shadow-2xl animate-in fade-in zoom-in duration-200">
@@ -660,7 +648,7 @@ export default function DashboardPage() {
                     {[1, 2, 4, 5, 10, 20].map((r) => <option key={r} value={r}>{r} km</option>)}
                   </select>
                 </div>
-                <div className="flex-[2]">
+                <div className="flex-2">
                   <label className="block text-sm font-bold text-[#3D405B] mb-2 pl-2">
                     What will you give in return?
                   </label>
@@ -710,7 +698,6 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* Create News Modal */}
       {isNewsModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#1D3557]/40 backdrop-blur-sm font-sans">
           <div className="bg-white rounded-[2rem] max-w-md w-full p-8 shadow-2xl animate-in fade-in zoom-in duration-200">
@@ -732,7 +719,7 @@ export default function DashboardPage() {
               </div>
               <div>
                 <label className="block text-sm font-bold text-[#3D405B] mb-2 pl-2">
-                  What's happening?
+                  What&apos;s happening?
                 </label>
                 <textarea
                   required

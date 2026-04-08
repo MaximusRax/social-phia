@@ -39,7 +39,6 @@ export default function RegisterPage() {
     setError("");
 
     try {
-      // 1. Register the new user
       const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -63,7 +62,6 @@ export default function RegisterPage() {
         return;
       }
 
-      // 2. Automatically log the user in after registration
       const signInResult = await signIn("credentials", {
         redirect: false,
         email: formData.email,
@@ -76,7 +74,6 @@ export default function RegisterPage() {
         return;
       }
 
-      // 3. Save the default location using the newly established user session
       if (formData.lat && formData.lng) {
         await fetch("/api/user/location", {
           method: "POST",
@@ -88,7 +85,6 @@ export default function RegisterPage() {
         });
       }
 
-      // 4. Redirect to dashboard
       router.push("/dashboard");
       
     } catch (err) {
@@ -113,7 +109,6 @@ export default function RegisterPage() {
         )}
 
         <form className="space-y-5" onSubmit={handleSubmit}>
-          {/* Account Details */}
           <div className="space-y-4">
             <input required type="text" placeholder="Full Name" className="block w-full rounded-xl border border-[#A8DADC] px-4 py-3 text-[#1D3557] focus:border-[#457B9D] focus:ring-1 focus:ring-[#457B9D] sm:text-sm bg-[#F4F1DE] outline-none" onChange={(e) => setFormData({ ...formData, name: e.target.value })} />
             <input required type="email" placeholder="Email address" className="block w-full rounded-xl border border-[#A8DADC] px-4 py-3 text-[#1D3557] focus:border-[#457B9D] focus:ring-1 focus:ring-[#457B9D] sm:text-sm bg-[#F4F1DE] outline-none" onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
@@ -122,7 +117,6 @@ export default function RegisterPage() {
 
           <hr className="border-[#A8DADC]/30 my-6" />
 
-          {/* Default Location Setup */}
           <div>
             <h3 className="text-sm font-bold text-[#1D3557] mb-1">Set Default Location</h3>
             <p className="text-xs text-[#3D405B]/80 mb-4">We&apos;ll use this to show nearby requests.</p>

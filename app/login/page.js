@@ -17,7 +17,7 @@ export default function LoginPage() {
    setError("");
 
    const result = await signIn("credentials", {
-     redirect: false, // We still keep this false so we can show custom errors
+     redirect: false, 
      email: formData.email,
      password: formData.password,
    });
@@ -26,8 +26,6 @@ export default function LoginPage() {
      setError("Invalid email or password. Please try again.");
      setLoading(false);
    } else {
-     // FIX: Use a hard browser redirect instead of Next.js soft routing.
-     // This forces mobile browsers to acknowledge the new auth cookie.
      router.push("/dashboard");
    }
  };
