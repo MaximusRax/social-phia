@@ -17,7 +17,7 @@ Social-Phia is a modern, location-based neighborhood assistance and community-bu
 | Resource | Link |
 | -------- | ---- |
 | **🌍 Live Website** | [https://social-phia.verce.app](#) |
-| **🎥 Demo Video** | [Watch the Demo on YouTube/Vimeo Here](#) |
+| **🎥 Demo Video** | [https://drive.google.com/file/d/1M_9AEKbN-utrC5inT9LR-VwVLCPcJ2-0/view](#) |
 | **📊 Pitch Deck (PPT)** | [https://docs.google.com/presentation/d/e/2PACX-1vTwCsYQE-tdl91_WBwOXsxVZdGVtRTFe9iDsf7PPkCD1Y9tYxb53ZZoxDKu8at0XQZQ89Bq9ZLppgbV/pub?start=false&loop=false&delayms=3000](#) |
 
 ## ✨ Features
