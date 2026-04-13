@@ -16,9 +16,9 @@ Social-Phia is a modern, location-based neighborhood assistance and community-bu
 
 | Resource | Link |
 | -------- | ---- |
-| **🌍 Live Website** | [Insert Live Site URL Here](#) |
+| **🌍 Live Website** | [https://social-phia.verce.app](#) |
 | **🎥 Demo Video** | [Watch the Demo on YouTube/Vimeo Here](#) |
-| **📊 Pitch Deck (PPT)** | [View Presentation on Google Slides/Canva Here](#) |
+| **📊 Pitch Deck (PPT)** | [https://docs.google.com/presentation/d/e/2PACX-1vTwCsYQE-tdl91_WBwOXsxVZdGVtRTFe9iDsf7PPkCD1Y9tYxb53ZZoxDKu8at0XQZQ89Bq9ZLppgbV/pub?start=false&loop=false&delayms=3000](#) |
 
 ## ✨ Features
 
@@ -59,14 +59,14 @@ Before you begin, ensure you have the following installed:
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/social-phia.git
 cd social-phia
 ```
 
 ### 2. Install Dependencies
 
 ```bash
-npm install
+bun install
+bun run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
